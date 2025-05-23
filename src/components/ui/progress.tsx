@@ -1,7 +1,7 @@
 "use client";
 
-import type * as React from "react";
 import * as ProgressPrimitive from "@radix-ui/react-progress";
+import type * as React from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ function Progress({
 			className={cn(
 				"relative h-3 w-full overflow-hidden rounded-full",
 				//modified classes
-				"border bg-transparent",
+				"border bg-white",
 				className,
 			)}
 			{...props}
