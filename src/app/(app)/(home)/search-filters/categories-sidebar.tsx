@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -9,20 +10,23 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { useTRPC } from "@/trpc/client";
 
 import type { CustomCategory } from "../types";
 
 interface CategoriesSidebarProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  data: CustomCategory[]; //TODO REMOVE THIS
 }
+
 
 export function CategoriesSidebar({
   open,
   onOpenChange,
-  data,
 }: CategoriesSidebarProps) {
+  const trpc = useTRPC();
+  const { data } = useQuery(trpc.categories.getMany.queryOptions());
+
   const router = useRouter();
 
   const [parentCategories, setParentCategories] = useState<
