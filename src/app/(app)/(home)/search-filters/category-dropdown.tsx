@@ -1,16 +1,16 @@
 "use client";
-import { get } from "http";
+import Link from "next/link";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { Category } from "@/payload-types";
 
+import type { CustomCategory } from "../types";
 import { SubcategoryMenu } from "./subcategory-menu";
 import { useDropdownPosition } from "./use-dropdown-position";
 
 interface CategoryDropdownProps {
-  category: Category;
+  category: CustomCategory;
   isActive?: boolean;
   isNavigationHovered?: boolean;
 }
@@ -23,6 +23,7 @@ export function CategoryDropdown({
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { getDropdownPosition } = useDropdownPosition(dropdownRef);
+  const dropdownPosition = getDropdownPosition();
 
   function onMouseEnter() {
     if (category.subcategories) {
@@ -34,7 +35,11 @@ export function CategoryDropdown({
     setIsOpen(false);
   }
 
-  const dropdownPosition = getDropdownPosition();
+  // function toggleDropdown() {
+  //   if (category.subcategories?.docs?.length) {
+  //     setIsOpen(!isOpen);
+  //   }
+  // }
 
   return (
     <div
@@ -42,16 +47,20 @@ export function CategoryDropdown({
       ref={dropdownRef}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      // onClick={toggleDropdown}
     >
       <div className="relative">
         <Button
+          variant="elevated"
           className={cn(
             "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
             isActive && !isNavigationHovered && "bg-white border-primary",
+            isOpen && "bg-white border-primary",
           )}
-          variant="elevated"
         >
-          {category.name}
+          <Link href={`/${category.slug === "all" ? "" : category.slug}`}>
+            {category.name}
+          </Link>
         </Button>
         {category.subcategories && category.subcategories.length > 0 && (
           <div
