@@ -4,13 +4,13 @@ import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import type { CategoriesGetManyOutput } from "@/modules/categories/types";
 
-import type { CustomCategory } from "../types";
 import { CategoriesSidebar } from "./categories-sidebar";
 import { CategoryDropdown } from "./category-dropdown";
 
 interface CategoriesProps {
-  data: CustomCategory[];
+  data: CategoriesGetManyOutput;
 }
 
 export function Categories({ data }: CategoriesProps) {
@@ -64,11 +64,7 @@ export function Categories({ data }: CategoriesProps) {
   return (
     <div className="relative w-full">
       {/* Category sidebar */}
-      <CategoriesSidebar
-        open={isSidebarOpen}
-        onOpenChange={setIsSidebarOpen}
-        data={data}
-      />
+      <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} />
 
       {/* hidden div to measure all item */}
       <div

@@ -19,7 +19,7 @@ export function SearchFilters() {
   );
 }
 
-export function SearchFiltersLoading() {
+export function SearchFiltersSkeleton() {
   return (
     <div
       className="flex flex-col px-4 lg:px-12 py-8 border-b gap-4 w-full"

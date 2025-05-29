@@ -5,7 +5,7 @@ import { getQueryClient, trpc } from "@/trpc/server";
 
 import Footer from "./footer";
 import { Navbar } from "./navbar";
-import { SearchFilters, SearchFiltersLoading } from "./search-filters";
+import { SearchFilters, SearchFiltersSkeleton } from "./search-filters";
 
 interface Props {
   children: React.ReactNode;
@@ -19,7 +19,7 @@ export default async function Layout({ children }: Props) {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Suspense fallback={<SearchFiltersLoading />}>
+        <Suspense fallback={<SearchFiltersSkeleton />}>
           <SearchFilters />
         </Suspense>
       </HydrationBoundary>

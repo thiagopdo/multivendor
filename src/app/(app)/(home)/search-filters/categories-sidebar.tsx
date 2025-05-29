@@ -10,15 +10,14 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import type { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { useTRPC } from "@/trpc/client";
 
-import type { CustomCategory } from "../types";
 
 interface CategoriesSidebarProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-
 
 export function CategoriesSidebar({
   open,
@@ -29,11 +28,11 @@ export function CategoriesSidebar({
 
   const router = useRouter();
 
-  const [parentCategories, setParentCategories] = useState<
-    CustomCategory[] | null
+  const [parentCategories, setParentCategories] =
+    useState<CategoriesGetManyOutput | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<
+    CategoriesGetManyOutput[1] | null
   >(null);
-  const [selectedCategory, setSelectedCategory] =
-    useState<CustomCategory | null>(null);
 
   //if we have parent categories, show them, else show subcategories
   const currentCategories = parentCategories ?? data ?? [];
@@ -44,9 +43,9 @@ export function CategoriesSidebar({
     onOpenChange(open);
   }
 
-  function handleCategoryClick(category: CustomCategory) {
+  function handleCategoryClick(category: CategoriesGetManyOutput[1]) {
     if (category.subcategories && category.subcategories.length > 0) {
-      setParentCategories(category.subcategories as CustomCategory[]);
+      setParentCategories(category.subcategories as CategoriesGetManyOutput);
       setSelectedCategory(category);
     } else {
       //this is a leaf category, so we can navigate to it directly
