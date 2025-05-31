@@ -13,7 +13,6 @@ import {
 import type { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { useTRPC } from "@/trpc/client";
 
-
 interface CategoriesSidebarProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
