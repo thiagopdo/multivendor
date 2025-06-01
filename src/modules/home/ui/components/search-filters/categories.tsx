@@ -96,6 +96,7 @@ export function Categories({ data }: CategoriesProps) {
         onMouseEnter={() => setIsAnyHovered(true)}
         onMouseLeave={() => setIsAnyHovered(false)}
       >
+        {/* //TODO harcoded button for view all */}
         {data.slice(0, visibleCount).map((category) => (
           <div className="" key={category.id}>
             <CategoryDropdown
