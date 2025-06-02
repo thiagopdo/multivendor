@@ -50,7 +50,15 @@ export function ProductFilters() {
           Clear
         </button>
       </div>
-      <ProductFilter title="Price" className="border-b-0">
+      <ProductFilter title="Price">
+        <PriceFilter
+          minPrice={filters.minPrice}
+          maxPrice={filters.maxPrice}
+          onMinPriceChange={(value) => onChange("minPrice", value)}
+          onMaxPriceChange={(value) => onChange("maxPrice", value)}
+        />
+      </ProductFilter>
+      <ProductFilter title="Tags" className="border-b-0">
         <PriceFilter
           minPrice={filters.minPrice}
           maxPrice={filters.maxPrice}

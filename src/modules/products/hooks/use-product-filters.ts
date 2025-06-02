@@ -1,4 +1,4 @@
-import { parseAsString, useQueryStates } from "nuqs";
+import { parseAsArrayOf, parseAsString, useQueryStates } from "nuqs";
 
 export function useProductFilters() {
   return useQueryStates({
@@ -8,5 +8,6 @@ export function useProductFilters() {
     maxPrice: parseAsString.withOptions({
       clearOnDefault: true,
     }),
+    tags: parseAsArrayOf 
   });
 }
