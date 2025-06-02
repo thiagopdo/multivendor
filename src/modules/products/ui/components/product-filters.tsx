@@ -38,6 +38,21 @@ function ProductFilter({ title, className, children }: ProductFiltersProps) {
 export function ProductFilters() {
   const [filters, setFilters] = useProductFilters();
 
+  const hasAnyFilters = Object.entries(filters).some(([, value]) => {
+    if (typeof value === "string") {
+      return value !== "";
+    }
+
+    return value !== null;
+  });
+
+  function onClear() {
+    setFilters({
+      minPrice: "",
+      maxPrice: "",
+    });
+  }
+
   function onChange(key: keyof typeof filters, value: unknown) {
     setFilters({ ...filters, [key]: value });
   }
@@ -46,9 +61,15 @@ export function ProductFilters() {
     <div className="border rounded-md bg-white">
       <div className="p-4 border-b flex items-center justify-between">
         <p className="font-medium">Filters</p>
-        <button className="underline" onClick={() => {}} type="button">
-          Clear
-        </button>
+        {hasAnyFilters && (
+          <button
+            className="underline cursor-pointer"
+            onClick={() => onClear()}
+            type="button"
+          >
+            Clear
+          </button>
+        )}
       </div>
       <ProductFilter title="Price" className="border-b-0">
         <PriceFilter
