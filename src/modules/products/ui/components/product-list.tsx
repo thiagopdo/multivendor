@@ -1,39 +1,16 @@
 "use client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
 
 import { useTRPC } from "@/trpc/client";
-
-import { useProductFilters } from "../../hooks/use-product-filters";
 
 interface Props {
   category?: string | null;
 }
 
-const parsePrice = (price: string | null | undefined): number | undefined =>
-  price != null && price !== "" ? Number(price) : undefined;
-
 export function ProductList({ category }: Props) {
-  const [filters] = useProductFilters();
-
   const trpc = useTRPC();
-  //const { minPrice, maxPrice } = filters;
-
-  // Memoize parsedFilters using filters as a dependency
-  const parsedFilters = useMemo(() => {
-    const { minPrice, maxPrice, ...restFilters } = filters; // Destructure inside useMemo
-    return {
-      minPrice: parsePrice(minPrice),
-      maxPrice: parsePrice(maxPrice),
-      ...restFilters,
-    };
-  }, [filters]);
-
   const { data } = useSuspenseQuery(
-    trpc.products.getMany.queryOptions({
-      category,
-      ...parsedFilters,
-    }),
+    trpc.products.getMany.queryOptions({ category }),
   );
 
   return (
