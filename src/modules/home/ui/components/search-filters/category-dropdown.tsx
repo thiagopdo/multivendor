@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 import type { CategoriesGetManyOutput } from "@/modules/categories/types";
 
 import { SubcategoryMenu } from "./subcategory-menu";
-import { useDropdownPosition } from "./use-dropdown-position";
 
 interface CategoryDropdownProps {
   category: CategoriesGetManyOutput[1];
@@ -22,8 +21,6 @@ export function CategoryDropdown({
 }: CategoryDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { getDropdownPosition } = useDropdownPosition(dropdownRef);
-  const dropdownPosition = getDropdownPosition();
 
   function onMouseEnter() {
     if (category.subcategories) {
@@ -72,11 +69,7 @@ export function CategoryDropdown({
         )}
       </div>
 
-      <SubcategoryMenu
-        category={category}
-        isOpen={isOpen}
-        position={dropdownPosition}
-      />
+      <SubcategoryMenu category={category} isOpen={isOpen} />
     </div>
   );
 }
