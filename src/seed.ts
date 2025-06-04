@@ -141,18 +141,32 @@ const categories = [
 const seed = async () => {
   const payload = await getPayload({ config });
 
-  //   create admin user
-  //   await payload.create({
-  //     collection: "users",
-  //     data: {
-  //       email: "admin@demo.com",
-  //       password: "demo",
-  //       roles: ["super-admin"],
-  //       username: "admin",
-  //     },
-  //   });
+  //create admin tenant
+  const adminTenant = await payload.create({
+    collection: "tenants",
+    data: {
+      name: "tenant-admin",
+      slug: "admin",
+      stripeAccountId: "admin",
+    },
+  });
 
-  //create categories
+  // create admin user
+  await payload.create({
+    collection: "users",
+    data: {
+      email: "admin@demo.com",
+      password: "demo",
+      roles: ["super-admin"],
+      username: "admin",
+      tenants: [
+        {
+          tenant: adminTenant.id,
+        },
+      ],
+    },
+  });
+
   for (const category of categories) {
     const parentCategory = await payload.create({
       collection: "categories",
@@ -164,7 +178,6 @@ const seed = async () => {
       },
     });
 
-    //create subcategories
     for (const subCategory of category.subcategories || []) {
       await payload.create({
         collection: "categories",
@@ -178,14 +191,10 @@ const seed = async () => {
   }
 };
 
-const main = async () => {
-  try {
-    await seed();
-    process.exit(0);
-  } catch (error) {
-    console.error("Error seeding data:", error);
-    process.exit(1);
-  }
-};
-
-main();
+try {
+  await seed();
+  process.exit(0);
+} catch (error) {
+  console.error("error seeding data", error);
+  process.exit(1); // Exit with error code
+}
