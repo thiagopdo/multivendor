@@ -1,10 +1,10 @@
 "use client";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { InboxIcon } from "lucide-react";
-import { useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
 import { DEFAULT_LIMIT } from "@/constants";
+import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 
 import { useProductFilters } from "../../hooks/use-product-filters";
@@ -12,33 +12,22 @@ import { ProductCard, ProductCardSkeleton } from "./product.card";
 
 interface Props {
   category?: string | null;
+  tenantSlug?: string;
+  narrowView?: boolean;
 }
 
-const parsePrice = (price: string | null | undefined): number | undefined =>
-  price != null && price !== "" ? Number(price) : undefined;
-
-export function ProductList({ category }: Props) {
+export function ProductList({ category, tenantSlug, narrowView }: Props) {
   const [filters] = useProductFilters();
 
   const trpc = useTRPC();
-  //const { minPrice, maxPrice } = filters;
-
-  // Memoize parsedFilters using filters as a dependency
-  const parsedFilters = useMemo(() => {
-    const { minPrice, maxPrice, ...restFilters } = filters; // Destructure inside useMemo
-    return {
-      minPrice: parsePrice(minPrice),
-      maxPrice: parsePrice(maxPrice),
-      ...restFilters,
-    };
-  }, [filters]);
 
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useSuspenseInfiniteQuery(
       trpc.products.getMany.infiniteQueryOptions(
         {
-          ...parsedFilters,
+          ...filters,
           category,
+          tenantSlug,
           limit: DEFAULT_LIMIT,
         },
         {
@@ -60,7 +49,12 @@ export function ProductList({ category }: Props) {
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+      <div
+        className={cn(
+          "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4",
+          narrowView && "lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3",
+        )}
+      >
         {data?.pages
           .flatMap((page) => page.docs)
           .map((product) => (
@@ -69,8 +63,8 @@ export function ProductList({ category }: Props) {
               id={product.id}
               name={product.title}
               imageUrl={product.image?.url}
-              authorUsername="thiago"
-              authorImageUrl={undefined}
+              tenantSlug={product.tenant?.slug}
+              tenantImageUrl={product.tenant?.image?.url}
               reviewRating={3}
               reviewCount={5}
               price={product.price}
@@ -93,9 +87,14 @@ export function ProductList({ category }: Props) {
   );
 }
 
-export function ProductListSkeleton() {
+export function ProductListSkeleton({ narrowView }: Props) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+    <div
+      className={cn(
+        "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4",
+        narrowView && "lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3",
+      )}
+    >
       {Array.from({ length: DEFAULT_LIMIT }).map((_, index) => (
         // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
         <ProductCardSkeleton key={index} />

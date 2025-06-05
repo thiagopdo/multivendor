@@ -7,26 +7,26 @@ import { ProductListView } from "@/modules/products/ui/views/product-list-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 
 interface Props {
-  params: Promise<{ category: string }>;
   searchParams: Promise<SearchParams>;
+  params: Promise<{ slug: string }>;
 }
 
-export default async function page({ params, searchParams }: Props) {
-  const { category } = await params;
+export default async function Page({ searchParams, params }: Props) {
+  const { slug } = await params;
   const filters = await loadProductFilters(searchParams);
 
   const queryClient = getQueryClient();
   void queryClient.prefetchInfiniteQuery(
     trpc.products.getMany.infiniteQueryOptions({
       ...filters,
-      category,
+      tenantSlug: slug,
       limit: DEFAULT_LIMIT,
     }),
   );
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProductListView category={category} />
+      <ProductListView tenantSlug={slug} narrowView />
     </HydrationBoundary>
   );
 }

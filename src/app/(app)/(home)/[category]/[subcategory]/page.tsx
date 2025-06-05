@@ -10,24 +10,24 @@ interface Props {
   params: Promise<{ subcategory: string }>;
   searchParams: Promise<SearchParams>;
 }
-const parsePrice = (price: string | null): number | undefined =>
-  price != null && price !== "" ? Number(price) : undefined;
+// const parsePrice = (price: string | null): number | undefined =>
+//   price != null && price !== "" ? Number(price) : undefined;
 
 export default async function page({ params, searchParams }: Props) {
   const { subcategory } = await params;
   const filters = await loadProductFilters(searchParams);
 
   // Parse minPrice and maxPrice into numbers
-  const parsedFilters = {
-    ...filters,
-    minPrice: parsePrice(filters.minPrice),
-    maxPrice: parsePrice(filters.maxPrice),
-  };
+  // const parsedFilters = {
+  //   ...filters,
+  //   minPrice: parsePrice(filters.minPrice),
+  //   maxPrice: parsePrice(filters.maxPrice),
+  // };
 
   const queryClient = getQueryClient();
   void queryClient.prefetchInfiniteQuery(
     trpc.products.getMany.infiniteQueryOptions({
-      ...parsedFilters,
+      ...filters,
       category: subcategory,
       limit: DEFAULT_LIMIT,
     }),
