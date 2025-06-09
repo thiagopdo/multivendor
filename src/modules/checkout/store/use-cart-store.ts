@@ -54,7 +54,10 @@ export const useCartStore = create<CartState>()(
             },
           },
         })),
-      clearAllCarts: () => set({ tenantCarts: {} }),
+      clearAllCarts: () =>
+        set({
+          tenantCarts: {},
+        }),
       getCartByTenant: (tenantSlug) =>
         get().tenantCarts[tenantSlug]?.productIds || [],
     }),

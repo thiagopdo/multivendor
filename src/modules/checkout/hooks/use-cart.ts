@@ -30,7 +30,7 @@ export function useCart(tenantSlug: string) {
   return {
     productIds,
     addProduct: (productId: string) => addProduct(tenantSlug, productId),
-    removeProduct: (productId: string) => addProduct(tenantSlug, productId),
+    removeProduct: (productId: string) => removeProduct(tenantSlug, productId),
     clearCark: clearTenantCart,
     clearAllCarts,
     toggleProduct,
