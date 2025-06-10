@@ -60,8 +60,8 @@ export function CheckoutView({ tenantSlug }: Props) {
   useEffect(() => {
     if (states.success) {
       setStates({ success: false, cancel: false }); // Reset the success state after handling it.
-      clearCart(); // Clear all items from the cart.
-      router.push("/products"); // Redirect to the products page.
+      clearCart(); 
+      router.push("/products"); 
     }
   }, [states.success, clearCart, router, setStates]);
 
@@ -69,7 +69,7 @@ export function CheckoutView({ tenantSlug }: Props) {
   useEffect(() => {
     if (error?.data?.code === "NOT_FOUND") {
       clearCart(); // Clear the cart if invalid products are found.
-      toast.warning("Invalid products in cart. All carts have been cleared."); // Show a warning message.
+      toast.warning("Invalid products in cart. All carts have been cleared."); 
     }
   }, [error, clearCart]);
 
