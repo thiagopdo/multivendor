@@ -40,9 +40,9 @@ export function SearchInput({ disabled }: Props) {
       </Button>
       {session.data?.user && (
         <Button variant="elevated" asChild>
-          <Link href="library">
+          <Link prefetch href="library">
             <BookmarkCheckIcon />
-            Libray
+            Library
           </Link>
         </Button>
       )}
