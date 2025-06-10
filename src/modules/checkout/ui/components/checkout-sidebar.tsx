@@ -5,28 +5,28 @@ import { formatCurrency } from "@/lib/utils";
 
 interface CheckoutSidebarProps {
   total: number;
-  onCheckout: () => void;
+  onPurchase: () => void;
   isCancelled?: boolean;
-  isPending?: boolean;
+  disabled?: boolean;
 }
 
 export function CheckoutSidebar({
   total,
-  onCheckout,
+  onPurchase,
   isCancelled,
-  isPending,
+  disabled,
 }: CheckoutSidebarProps) {
   return (
     <div className="border rounded-md overflow-hidden bg-white flex flex-col">
       <div className="flex items-center justify-between p-4 border-b">
-        <h4 className="font-medium text-lg">TOtal</h4>
+        <h4 className="font-medium text-lg">Total</h4>
         <p className="font-medium text-lg">{formatCurrency(total)}</p>
       </div>
       <div className="p-4 flex items-center justify-center">
         <Button
           variant="elevated"
-          disabled={isPending}
-          onClick={onCheckout}
+          disabled={disabled}
+          onClick={onPurchase}
           size="lg"
           className="text-base w-full text-white bg-primary hover:bg-pink-400 hover:text-primary"
         >
