@@ -65,8 +65,8 @@ export function ProductList({ category, tenantSlug, narrowView }: Props) {
               imageUrl={product.image?.url}
               tenantSlug={product.tenant?.slug}
               tenantImageUrl={product.tenant?.image?.url}
-              reviewRating={3}
-              reviewCount={5}
+              reviewRating={product.reviewRating}
+              reviewCount={product.reviewCount}
               price={product.price}
             />
           ))}
@@ -96,7 +96,6 @@ export function ProductListSkeleton({ narrowView }: Props) {
       )}
     >
       {Array.from({ length: DEFAULT_LIMIT }).map((_, index) => (
-        // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
         <ProductCardSkeleton key={index} />
       ))}
     </div>
