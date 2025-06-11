@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { InboxIcon, LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -23,6 +23,7 @@ export function CheckoutView({ tenantSlug }: Props) {
   const [states, setStates] = useCheckoutStates(); // Custom hook to manage checkout states (e.g., success or cancel).
   const { productIds, removeProduct, clearCart } = useCart(tenantSlug); // Custom hook to manage cart operations for the tenant.
 
+  const queryClient = useQueryClient();
   const trpc = useTRPC(); // Hook to access TRPC queries and mutations.
 
   // Fetch product details based on the product IDs in the cart.
@@ -60,16 +61,24 @@ export function CheckoutView({ tenantSlug }: Props) {
   useEffect(() => {
     if (states.success) {
       setStates({ success: false, cancel: false }); // Reset the success state after handling it.
-      clearCart(); 
-      router.push("/products"); 
+      clearCart();
+      queryClient.invalidateQueries(trpc.library.getMany.infiniteQueryFilter());
+      router.push("/library");
     }
-  }, [states.success, clearCart, router, setStates]);
+  }, [
+    states.success,
+    clearCart,
+    router,
+    setStates,
+    queryClient,
+    trpc.library.getMany,
+  ]);
 
   // Effect to handle errors during product fetching.
   useEffect(() => {
     if (error?.data?.code === "NOT_FOUND") {
       clearCart(); // Clear the cart if invalid products are found.
-      toast.warning("Invalid products in cart. All carts have been cleared."); 
+      toast.warning("Invalid products in cart. All carts have been cleared.");
     }
   }, [error, clearCart]);
 
