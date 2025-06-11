@@ -24,6 +24,7 @@ export const checkoutRouter = createTRPCRouter({
       const products = await ctx.db.find({
         collection: "products",
         depth: 2, //populate categories images tenant tenant.image
+        
         where: {
           and: [
             {
