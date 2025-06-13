@@ -34,7 +34,6 @@ export const Orders: CollectionConfig = {
       required: true,
       hasMany: false,
     },
-
     {
       name: "stripeCheckoutSessionId",
       type: "text",
@@ -42,6 +41,13 @@ export const Orders: CollectionConfig = {
       admin: {
         description:
           "The ID of the Stripe Checkout session associated with this order.",
+      },
+    },
+    {
+      name: "stripeAccountId",
+      type: "text",
+      admin: {
+        description: "The Stripe account associated with this order.",
       },
     },
   ],

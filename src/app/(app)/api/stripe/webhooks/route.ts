@@ -19,7 +19,6 @@ export async function POST(request: Request) {
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
 
-    // biome-ignore lint/style/noNonNullAssertion: <explanation>
     if (error! instanceof Error) {
       console.log(error);
     }
@@ -30,7 +29,10 @@ export async function POST(request: Request) {
 
   console.log("✅SUCCESS:", event.id);
 
-  const permittedEvents: string[] = ["checkout.session.completed"];
+  const permittedEvents: string[] = [
+    "checkout.session.completed",
+    "account.updated",
+  ];
 
   const payload = await getPayload({ config });
 
@@ -40,51 +42,73 @@ export async function POST(request: Request) {
 
     try {
       switch (event.type) {
-        case "checkout.session.completed": {
-          data = event.data.object as Stripe.Checkout.Session;
+        case "checkout.session.completed":
+          {
+            data = event.data.object as Stripe.Checkout.Session;
 
-          if (!data.metadata?.userId) {
-            throw new Error("User ID required");
+            if (!data.metadata?.userId) {
+              throw new Error("User ID required");
+            }
+
+            const user = await payload.findByID({
+              collection: "users",
+              id: data.metadata.userId,
+            });
+            if (!user) {
+              throw new Error("User not found");
+            }
+
+            const expandedSession = await stripe.checkout.sessions.retrieve(
+              data.id,
+              {
+                expand: ["line_items.data.price.product"],
+              },
+              {
+                stripeAccount: event.account,
+              },
+            );
+
+            if (
+              !expandedSession.line_items?.data ||
+              !expandedSession.line_items.data.length
+            ) {
+              throw new Error("No line items found in session");
+            }
+
+            const lineItems = expandedSession.line_items
+              .data as ExpandedLineItem[];
+
+            for (const item of lineItems) {
+              await payload.create({
+                collection: "orders",
+                data: {
+                  stripeCheckoutSessionId: data.id,
+                  stripeAccountId: event.account,
+                  user: user.id,
+                  product: item.price.product.metadata.id,
+                  name: item.price.product.name,
+                },
+              });
+            }
           }
+          break;
+        case "account.updated":
+          {
+            data = event.data.object as Stripe.Account;
 
-          const user = await payload.findByID({
-            collection: "users",
-            id: data.metadata.userId,
-          });
-          if (!user) {
-            throw new Error("User not found");
-          }
-
-          const expandedSession = await stripe.checkout.sessions.retrieve(
-            data.id,
-            {
-              expand: ["line_items.data.price.product"],
-            },
-          );
-
-          if (
-            !expandedSession.line_items?.data ||
-            !expandedSession.line_items.data.length
-          ) {
-            throw new Error("No line items found in session");
-          }
-
-          const lineItems = expandedSession.line_items
-            .data as ExpandedLineItem[];
-
-          for (const item of lineItems) {
-            await payload.create({
-              collection: "orders",
+            await payload.update({
+              collection: "tenants",
+              where: {
+                stripeAccountId: {
+                  equals: data.id,
+                },
+              },
               data: {
-                stripeCheckoutSessionId: data.id,
-                user: user.id,
-                product: item.price.product.metadata.id,
-                name: item.price.product.name,
+                stripeDetailsSubmitted: data.details_submitted,
               },
             });
           }
           break;
-        }
         default:
           throw new Error(`Unhandled event type: ${event.type}`);
       }
