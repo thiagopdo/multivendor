@@ -78,7 +78,6 @@ export const checkoutRouter = createTRPCRouter({
       const products = await ctx.db.find({
         collection: "products",
         depth: 2, //populate categories images tenant tenant.image
-
         where: {
           and: [
             {
@@ -91,6 +90,11 @@ export const checkoutRouter = createTRPCRouter({
                 equals: input.tenantSlug,
               },
             },
+            {
+              isArchived: {
+                not_equals: true,
+              },
+            },
           ],
         },
       });
@@ -98,7 +102,7 @@ export const checkoutRouter = createTRPCRouter({
       if (products.totalDocs !== input.productIds.length) {
         throw new TRPCError({
           code: "NOT_FOUND",
-          message: "Some products were not found for the given tenant slug",
+          message: "Product not found",
         });
       }
 
@@ -193,7 +197,14 @@ export const checkoutRouter = createTRPCRouter({
         collection: "products",
         depth: 2, //populate categories images tenant tenant.image
         where: {
-          id: { in: input.ids },
+          and: [
+            {
+              id: { in: input.ids },
+            },
+            {
+              isArchived: { not_equals: true },
+            },
+          ],
         },
       });
 

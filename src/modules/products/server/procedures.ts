@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { headers as getHeaders } from "next/headers";
 import type { Sort, Where } from "payload";
 import z from "zod";
@@ -23,6 +24,13 @@ export const productsRouter = createTRPCRouter({
           content: false, //don't return content field
         },
       });
+
+      if (product.isArchived) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Product not found.",
+        });
+      }
 
       let isPurchased = false;
 
@@ -116,7 +124,11 @@ export const productsRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const where: Where = {};
+      const where: Where = {
+        isArchived: {
+          not_equals: true,
+        },
+      };
       const sort: Sort =
         input.sort === "trending"
           ? "+createdAt"

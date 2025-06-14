@@ -237,6 +237,10 @@ export interface Product {
    * Protected content only visible to customers after purchase. Add product documentation, downloadable files, started guides and bonus materials.
    */
   content?: string | null;
+  /**
+   * Archived products are not visible to customers.
+   */
+  isArchived?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -433,6 +437,7 @@ export interface ProductsSelect<T extends boolean = true> {
   image?: T;
   refundPolicy?: T;
   content?: T;
+  isArchived?: T;
   updatedAt?: T;
   createdAt?: T;
 }
