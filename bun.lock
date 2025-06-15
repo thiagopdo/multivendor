@@ -4,12 +4,12 @@
     "": {
       "name": "multitenant-ecommerce",
       "dependencies": {
-        "@hookform/resolvers": "^5.1.1",
-        "@payloadcms/db-mongodb": "3.42.0",
-        "@payloadcms/next": "^3.42.0",
-        "@payloadcms/payload-cloud": "^3.42.0",
-        "@payloadcms/plugin-multi-tenant": "^3.42.0",
-        "@payloadcms/richtext-lexical": "^3.42.0",
+        "@hookform/resolvers": "5.0.1",
+        "@payloadcms/db-mongodb": "^3.39.0",
+        "@payloadcms/next": "^3.39.0",
+        "@payloadcms/payload-cloud": "^3.39.0",
+        "@payloadcms/plugin-multi-tenant": "^3.39.0",
+        "@payloadcms/richtext-lexical": "^3.39.0",
         "@radix-ui/react-accordion": "^1.2.11",
         "@radix-ui/react-alert-dialog": "^1.1.14",
         "@radix-ui/react-aspect-ratio": "^1.1.7",
@@ -333,7 +333,7 @@
 
     "@floating-ui/utils": ["@floating-ui/utils@0.2.9", "", {}, "sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg=="],
 
-    "@hookform/resolvers": ["@hookform/resolvers@5.1.1", "", { "dependencies": { "@standard-schema/utils": "^0.3.0" }, "peerDependencies": { "react-hook-form": "^7.55.0" } }, "sha512-J/NVING3LMAEvexJkyTLjruSm7aOFx7QX21pzkiJfMoNG0wl5aFEjLTl7ay7IQb9EWY6AkrBy7tHL2Alijpdcg=="],
+    "@hookform/resolvers": ["@hookform/resolvers@5.0.1", "", { "dependencies": { "@standard-schema/utils": "^0.3.0" }, "peerDependencies": { "react-hook-form": "^7.55.0" } }, "sha512-u/+Jp83luQNx9AdyW2fIPGY6Y7NG68eN2ZW8FOJYL+M0i4s49+refdJdOp/A9n9HFQtQs3HIDHQvX3ZET2o7YA=="],
 
     "@humanfs/core": ["@humanfs/core@0.19.1", "", {}, "sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA=="],
 
