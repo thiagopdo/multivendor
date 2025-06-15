@@ -227,7 +227,21 @@ export interface Product {
   id: string;
   tenant?: (string | null) | Tenant;
   title: string;
-  description?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   price: number;
   category?: (string | null) | Category;
   tags?: (string | Tag)[] | null;
@@ -236,11 +250,29 @@ export interface Product {
   /**
    * Protected content only visible to customers after purchase. Add product documentation, downloadable files, started guides and bonus materials.
    */
-  content?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   /**
    * Archived products are not visible to customers.
    */
   isArchived?: boolean | null;
+  /**
+   * Archived products are not visible to customers at storefront.
+   */
+  isPrivate?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -438,6 +470,7 @@ export interface ProductsSelect<T extends boolean = true> {
   refundPolicy?: T;
   content?: T;
   isArchived?: T;
+  isPrivate?: T;
   updatedAt?: T;
   createdAt?: T;
 }

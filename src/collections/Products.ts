@@ -26,7 +26,7 @@ export const Products: CollectionConfig = {
     },
     {
       name: "description",
-      type: "text",
+      type: "richText",
     },
     {
       name: "price",
@@ -58,7 +58,7 @@ export const Products: CollectionConfig = {
     },
     {
       name: "content",
-      type: "textarea",
+      type: "richText",
       admin: {
         description:
           "Protected content only visible to customers after purchase. Add product documentation, downloadable files, started guides and bonus materials.",
@@ -71,6 +71,16 @@ export const Products: CollectionConfig = {
       type: "checkbox",
       admin: {
         description: "Archived products are not visible to customers.",
+      },
+    },
+    {
+      name: "isPrivate",
+      label: "Private",
+      defaultValue: false,
+      type: "checkbox",
+      admin: {
+        description:
+          "Archived products are not visible to customers at storefront.",
       },
     },
   ],

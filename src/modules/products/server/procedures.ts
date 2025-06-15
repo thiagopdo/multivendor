@@ -157,6 +157,11 @@ export const productsRouter = createTRPCRouter({
         where["tenant.slug"] = {
           equals: input.tenantSlug,
         };
+      } else {
+        // biome-ignore lint/complexity/useLiteralKeys: <explanation>
+        where["isPrivate"] = {
+          not_equals: true,
+        };
       }
 
       if (input.category) {

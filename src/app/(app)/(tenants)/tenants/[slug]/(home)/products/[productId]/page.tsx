@@ -20,7 +20,6 @@ export default async function page({ params }: Props) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense fallback={<ProductViewSkeleton />}>
-        {/* The ProductViewSkeleton component can be a simple loading placeholder */}
         <ProductView productId={productId} tenantSlug={slug} />
       </Suspense>
     </HydrationBoundary>
