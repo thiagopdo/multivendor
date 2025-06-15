@@ -11,6 +11,8 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+export const dynamic = "force-dynamic"; // Force dynamic rendering for this page
+
 export default async function Page({ searchParams, params }: Props) {
   const { slug } = await params;
   const filters = await loadProductFilters(searchParams);
