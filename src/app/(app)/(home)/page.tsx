@@ -12,23 +12,23 @@ interface Props {
 }
 
 // Helper function to parse price strings into numbers
-const parsePrice = (price: string | null): number | undefined =>
-  price != null && price !== "" ? Number(price) : undefined;
+// const parsePrice = (price: string | null): number | undefined =>
+//   price != null && price !== "" ? Number(price) : undefined;
 
 export default async function page({ searchParams }: Props) {
   const filters = await loadProductFilters(searchParams);
 
-  // Parse minPrice and maxPrice into numbers
-  const parsedFilters = {
-    ...filters,
-    minPrice: parsePrice(filters.minPrice),
-    maxPrice: parsePrice(filters.maxPrice),
-  };
+  // // Parse minPrice and maxPrice into numbers
+  // const parsedFilters = {
+  //   ...filters,
+  //   minPrice: parsePrice(filters.minPrice),
+  //   maxPrice: parsePrice(filters.maxPrice),
+  // };
 
   const queryClient = getQueryClient();
   void queryClient.prefetchInfiniteQuery(
     trpc.products.getMany.infiniteQueryOptions({
-      ...parsedFilters,
+      ...filters,
       limit: DEFAULT_LIMIT,
     }),
   );
