@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
-    "@payloadcms/db-mongodb": "^3.42.0",
+    "@payloadcms/db-mongodb": "3.42.0",
     "@payloadcms/next": "^3.42.0",
     "@payloadcms/payload-cloud": "^3.42.0",
     "@payloadcms/plugin-multi-tenant": "^3.42.0",
