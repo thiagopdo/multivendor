@@ -12,6 +12,7 @@ export const tenantsRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
+      console.log("Received slug:", input.slug);
       const tenantsData = await ctx.db.find({
         collection: "tenants",
         depth: 1, // tenant.image is type of 'Media'
