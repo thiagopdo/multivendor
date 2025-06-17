@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 export const config = {
   // This middleware runs on all routes except for API routes, Next.js static files, and media files
-  matcher: ["/((?!api/|_next/|_static/|_vercel|media/|[\\w-]+\\.\\w+).*)"],
+  matcher: ["/((?!api/|_next/|_static/|_vercel|media/|[\w-]+\.\w+).*)"],
 };
 
 export default async function Middleware(req: NextRequest) {
