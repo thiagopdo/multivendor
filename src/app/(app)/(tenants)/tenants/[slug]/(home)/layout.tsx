@@ -1,5 +1,6 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 import { Footer } from "@/modules/tenants/ui/components/footer";
 import { Navbar, NavbarSkeleton } from "@/modules/tenants/ui/components/navbar";
@@ -24,7 +25,9 @@ export default async function Layout({ children, params }: LayoutProps) {
     <div className="min-h-screen bg-[#F4F4F0] flex flex-col">
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Suspense fallback={<NavbarSkeleton />}>
-          <Navbar slug={slug} />
+          <ErrorBoundary fallback={<div>Failed to load</div>}>
+            <Navbar slug={slug} />
+          </ErrorBoundary>
         </Suspense>
       </HydrationBoundary>
       <div className="flex-1">
