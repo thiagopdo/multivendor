@@ -10,11 +10,13 @@ export async function generateAuthCookie({ prefix, value }: Props) {
 
   cookies.set({
     name: `${prefix}-token`,
-    value: value,
+    value,
     httpOnly: true,
     path: "/",
-    sameSite: "none",
-    domain: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
-    secure: process.env.NODE_ENV === "production",
+    ...(process.env.NODE_ENV !== "development" && {
+      sameSite: "none",
+      domain: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
+      secure: true,
+    }),
   });
 }
