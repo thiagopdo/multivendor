@@ -54,7 +54,7 @@ export function SearchFiltersSkeleton() {
       className="flex flex-col px-4 lg:px-12 py-8 border-b gap-4 w-full"
       style={{ backgroundColor: "#F5F5F5" }}
     >
-      <SearchInput disabled />
+      <SearchInput />
       <div className="hidden lg:block">
         <div className="h-11" />
       </div>
